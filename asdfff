@@ -1,0 +1,89 @@
+import nest_asyncio
+import aiogram
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils import executor
+from aiogram import Bot, Dispatcher, executor
+from aiogram.types import CallbackQuery, Message,\
+    InlineKeyboardButton, InlineKeyboardMarkup
+
+
+nest_asyncio.apply()   
+    
+bot=Bot("5384533001:AAFkP7NUEEh0873_ks95kWuR-Noe8KSwC_0")
+dp=Dispatcher(bot)
+
+@dp.message_handler(commands="start")
+async def cmd_language(message: types.Message):
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["RU 🇷🇺", "ENG 🇬🇧"]
+    keyboard.add(*buttons)
+    await message.answer("Welcome, choose your language", reply_markup=keyboard)
+
+
+
+@dp.message_handler(lambda message: message.text == "RU 🇷🇺")
+async def callback_start(message: Message):
+    await bot.send_message(
+        chat_id=message.chat.id,
+        reply_markup=start_kb,
+        text="Спасибо, что выбрали нас ❤")
+
+start_kb=InlineKeyboardMarkup().row(
+    InlineKeyboardButton(text="Приватные читы",callback_data='cheats'))
+start_kb.add(InlineKeyboardButton('Форум', url='https://phoenix-hack.com/'))
+start_kb.add(InlineKeyboardButton('Discord', url='https://discord.gg/nh8zFdCPhv'))
+start_kb.add(InlineKeyboardButton('Вконтакте', url='https://vk.com/satanosoft'))
+start_kb.add(InlineKeyboardButton('Телеграм', url='https://t.me/phoenix_satano'))
+
+
+
+@dp.callback_query_handler(lambda c: c.data == 'cheats')
+async def process_callback_cheats(callback_query: types.CallbackQuery):
+    await bot.send_message(callback_query.from_user.id, 'Наши товары', reply_markup=cheats_kb)
+
+cheats_kb=InlineKeyboardMarkup().row(
+    InlineKeyboardButton(text="CSGO",callback_data='CSGO'))
+cheats_kb.add(InlineKeyboardButton('PUBG', callback_data='PUBG'))
+cheats_kb.add(InlineKeyboardButton('RUST', callback_data='RUST'))
+cheats_kb.add(InlineKeyboardButton('APEX', callback_data='APEX'))
+cheats_kb.add(InlineKeyboardButton('R6:Siege', callback_data='R6:Siege'))
+cheats_kb.add(InlineKeyboardButton('LOL', callback_data='LOL'))
+
+@dp.callback_query_handler(lambda c: c.data == 'CSGO')
+async def process_callback_CSGO(callback_query: types.CallbackQuery):
+    await bot.send_message(callback_query.from_user.id, 'Наши товары - CSGO', reply_markup=CSGO_kb)
+
+CSGO_kb=InlineKeyboardMarkup().row(
+    InlineKeyboardButton(text="Phoenix Lite",callback_data='Lite'))
+CSGO_kb.add(InlineKeyboardButton('Phoenix Pro', callback_data='Pro'))
+
+@dp.callback_query_handler(lambda c: c.data == 'Lite')
+async def process_callback_Lite(callback_query: types.CallbackQuery):
+    await bot.send_message(callback_query.from_user.id, 'НЕ ВСЕМ ИГРОКАМ НУЖЕН AIM И RAGE, ИМЕННО ПО ЭТОМУ PHOENIX LITE СТОИТ ДЕШЕВЛЕ И ПРЕДОСТАВЛЯЕТСЯ БЕСПЛАТНЫЙ ТЕСТ. Не все игроки готовы к палевной игре, мы решили сделать урезанную версию Phoenix PRO чтобы вы играли по Legit. Софт включает в себя функции Wallhack - TriggerBot - Skinchanger. Это достаточно для тех людей кто играет беспалевно с вх и готов играть аккуратно наблюдая за соперниками через стену, держать в руках всегда красивое оружие и иметь быструю реакцию благодаря TriggerBot', reply_markup=Lite_kb)
+
+Lite_kb=InlineKeyboardMarkup().row(
+    InlineKeyboardButton(text="Пробная версия",callback_data='Lite'))
+Lite_kb.add(InlineKeyboardButton('Покупка', callback_data='Pro'))
+
+@dp.callback_query_handler(lambda c: c.data == 'Pro')
+async def process_callback_Pro(callback_query: types.CallbackQuery):
+    await bot.send_message(callback_query.from_user.id, 'ТОНКАЯ НАСТРОЙКА ВАШЕГО КОНФИГА СО ВСЕМИ ФУНКЦИЯМИ. НАСТРОЙКА ПОЛНОСТЬЮ НА РУССКОМ ЯЗЫКЕ, СПЕЦИАЛЬНО ДЛЯ ЛЮДЕЙ КТО ГОТОВ ДОЙТИ ДО ГЛОБАЛА Софт включает в себя самые распространенные функции в читах, а именно AIM - Wallhack - TRIGGERBOT - MISC - SKINCHANGER. Данная возможность конфига предоставленна для опытных читеров на русском языке, а так-же для новичков которые готовы вести свой путь до глобала с дополнительными возможностями. Не бойтесь что вас бросят после покупки, если вы почувствовали что версии Lite вам не достаточно, значит вы готовы для Pro Phoenix', reply_markup=Pro_kb)
+Pro_kb=InlineKeyboardMarkup().row(
+    InlineKeyboardButton(text="Пробная версия",callback_data='Lite'))
+Pro_kb.add(InlineKeyboardButton('Покупка', callback_data='Pro'))
+    
+@dp.callback_query_handler(lambda c: c.data == 'PUBG')
+async def process_callback_PUBG(callback_query: types.CallbackQuery):
+    await bot.send_message(callback_query.from_user.id, 'Наши товары - PUBG', reply_markup=PUBG_kb)
+
+PUBG_kb=InlineKeyboardMarkup().row(
+    InlineKeyboardButton(text="МУЛЬТИПАК ДЛЯ PUBG",callback_data='Lite'))
+PUBG_kb.add(InlineKeyboardButton('WALLHACK (ВХ) ДЛЯ PUBG', callback_data='Pro'))
+PUBG_kb.add(InlineKeyboardButton('РАДАР ДЛЯ PUBG', callback_data='Pro'))
+
+
+
+
+if __name__ == "__main__":
+    executor.start_polling(dp)
